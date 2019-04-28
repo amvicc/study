@@ -8,7 +8,8 @@ class MyWindow(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
         super(MyWindow, self).__init__(parent)
         self.setupUi(self)
 
-        self.setDefault()
+        self.rbUTF.setChecked(True)
+
 
         path = QtCore.QDir.rootPath()
         self.dirModel = QtWidgets.QFileSystemModel()
@@ -32,12 +33,28 @@ class MyWindow(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
         self.actionSave.setStatusTip('Save File')
         self.actionSave.triggered.connect(self.save)
 
+        self.comboBox.currentTextChanged.connect(self.onComboBoxChanged)
+
+        self.cbBold.stateChanged.connect(self.onBoldClick)
+        self.cbItalic.stateChanged.connect(self.onItalicClick)
+        self.cbUnderlined.stateChanged.connect(self.onUnderlinedClick)
+
+        self.rbUTF.clicked.connect(self.decodeUTF)
+        self.rbCp.clicked.connect(self.decodeCP1551)
+
     def setDefault(self):
         self.rbUTF.setChecked(True)
+        self.decodeUTF()
         self.comboBox.setCurrentIndex(0)
         self.cbBold.setChecked(False)
         self.cbItalic.setChecked(False)
         self.cbUnderlined.setChecked(False)
+
+    def decodeUTF(self):
+        self.onFileClick(self.listView.currentIndex())
+
+    def decodeCP1551(self):
+        self.onFileClick(self.listView.currentIndex())
 
     def save(self):
         name = QtWidgets.QFileDialog.getSaveFileName(self, 'Save File')
@@ -68,8 +85,57 @@ class MyWindow(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
         if not file.open(QtCore.QIODevice.ReadOnly):
             QtWidgets.QMessageBox.information(None, 'info', file.errorString())
         stream = QtCore.QTextStream(file)
+        stream.setAutoDetectUnicode(False)
+
+        if self.rbUTF.isChecked():
+            stream.setCodec('UTF-8')
+        else:
+            stream.setCodec('cp1251')
+
         self.textBrowser.setText(stream.readAll())
         file.close()
+
+    def onComboBoxChanged(self, value):
+        text = self.textBrowser.toPlainText()
+        self.textBrowser.clear()
+        self.textBrowser.setTextColor(QtGui.QColor(value.lower()))
+        self.textBrowser.setText(text)
+
+    def onBoldClick(self):
+        if self.cbBold.isChecked():
+            text = self.textBrowser.toPlainText()
+            self.textBrowser.clear()
+            self.textBrowser.setFontWeight(QtGui.QFont.Bold)
+            self.textBrowser.setText(text)
+        else:
+            text = self.textBrowser.toPlainText()
+            self.textBrowser.clear()
+            self.textBrowser.setFontWeight(QtGui.QFont.Normal)
+            self.textBrowser.setText(text)
+
+    def onItalicClick(self):
+        if self.cbItalic.isChecked():
+            text = self.textBrowser.toPlainText()
+            self.textBrowser.clear()
+            self.textBrowser.setFontItalic(True)
+            self.textBrowser.setText(text)
+        else:
+            text = self.textBrowser.toPlainText()
+            self.textBrowser.clear()
+            self.textBrowser.setFontItalic(False)
+            self.textBrowser.setText(text)
+
+    def onUnderlinedClick(self):
+        if self.cbUnderlined.isChecked():
+            text = self.textBrowser.toPlainText()
+            self.textBrowser.clear()
+            self.textBrowser.setFontUnderline(True)
+            self.textBrowser.setText(text)
+        else:
+            text = self.textBrowser.toPlainText()
+            self.textBrowser.clear()
+            self.textBrowser.setFontUnderline(False)
+            self.textBrowser.setText(text)
 
 def main():
     app = QtWidgets.QApplication(sys.argv)
