@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Graphics editor</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QGraphicsView" name="graphicsView"/>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionOpen"/>
+    <addaction name="actionSave"/>
+    <addaction name="actionExit"/>
+   </widget>
+   <widget class="QMenu" name="menuPicture">
+    <property name="title">
+     <string>Picture</string>
+    </property>
+    <addaction name="actionResize"/>
+    <addaction name="actionRotate"/>
+    <addaction name="actionCrop"/>
+    <addaction name="actionROI"/>
+   </widget>
+   <widget class="QMenu" name="menuFiltration">
+    <property name="title">
+     <string>Filtration</string>
+    </property>
+    <addaction name="actionHomogeneous"/>
+    <addaction name="actionMedian"/>
+    <addaction name="actionBilateral"/>
+    <addaction name="actionSobel_operator"/>
+   </widget>
+   <widget class="QMenu" name="menuContours">
+    <property name="title">
+     <string>Contours</string>
+    </property>
+    <addaction name="actionKenny_Detector"/>
+    <addaction name="actionHough_converting_to_search_for_lines"/>
+    <addaction name="actionObject_Detection"/>
+    <addaction name="actionComparison_of_contours_through_total_characteristics"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuPicture"/>
+   <addaction name="menuFiltration"/>
+   <addaction name="menuContours"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionOpen">
+   <property name="text">
+    <string>Open</string>
+   </property>
+  </action>
+  <action name="actionSave">
+   <property name="text">
+    <string>Save</string>
+   </property>
+  </action>
+  <action name="actionExit">
+   <property name="text">
+    <string>Exit</string>
+   </property>
+  </action>
+  <action name="actionResize">
+   <property name="text">
+    <string>Resize</string>
+   </property>
+  </action>
+  <action name="actionRotate">
+   <property name="text">
+    <string>Rotate</string>
+   </property>
+  </action>
+  <action name="actionCrop">
+   <property name="text">
+    <string>Crop</string>
+   </property>
+  </action>
+  <action name="actionROI">
+   <property name="text">
+    <string>ROI</string>
+   </property>
+  </action>
+  <action name="actionHomogeneous">
+   <property name="text">
+    <string>Homogeneous</string>
+   </property>
+  </action>
+  <action name="actionMedian">
+   <property name="text">
+    <string>Median</string>
+   </property>
+  </action>
+  <action name="actionBilateral">
+   <property name="text">
+    <string>Bilateral</string>
+   </property>
+  </action>
+  <action name="actionSobel_operator">
+   <property name="text">
+    <string>Sobel operator</string>
+   </property>
+  </action>
+  <action name="actionKenny_Detector">
+   <property name="text">
+    <string>Kenny Detector</string>
+   </property>
+  </action>
+  <action name="actionHough_converting_to_search_for_lines">
+   <property name="text">
+    <string>Hough converting to search for lines</string>
+   </property>
+  </action>
+  <action name="actionObject_Detection">
+   <property name="text">
+    <string>Object Detection</string>
+   </property>
+  </action>
+  <action name="actionComparison_of_contours_through_total_characteristics">
+   <property name="text">
+    <string>Comparison of contours through total characteristics</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
