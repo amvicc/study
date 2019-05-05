@@ -13,6 +13,8 @@ class Window(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
         self.graphicsView.setScene(self.scene)
 
         self.actionOpen.triggered.connect(self.openPicture)
+        self.actionSave.triggered.connect(self.savePicture)
+        self.actionExit.triggered.connect(self.exit)
 
     def openPicture(self):
         self.scene.clear()
@@ -29,6 +31,14 @@ class Window(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
         self.scene.addPixmap(pixMap)
         self.graphicsView.fitInView(QtCore.QRectF(0, 0, width, height), QtCore.Qt.KeepAspectRatio)
         self.scene.update()
+
+    def savePicture(self):
+        image = self.graphicsView.grab().toImage()
+        filepath = QtWidgets.QFileDialog.getSaveFileName(self, "Save path")
+        image.save(filepath[0], "PNG")
+
+    def exit(self):
+        self.close()
 
 def main():
     app = QtWidgets.QApplication(sys.argv)
