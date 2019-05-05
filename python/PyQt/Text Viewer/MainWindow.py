@@ -104,7 +104,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Text Viewer"))
         self.gbRadioButtons.setTitle(_translate("MainWindow", "Encoding"))
         self.rbUTF.setText(_translate("MainWindow", "UTF-8"))
         self.rbCp.setText(_translate("MainWindow", "cp1251"))

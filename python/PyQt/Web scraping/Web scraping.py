@@ -90,7 +90,7 @@ class Window(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
 def main():
     app = QtWidgets.QApplication(sys.argv)
     window = Window()
-    window.show()
+    window.showMaximized()
     sys.exit(app.exec())
 
 

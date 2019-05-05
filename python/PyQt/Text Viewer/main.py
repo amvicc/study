@@ -4,14 +4,13 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 
 class MyWindow(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
-    def __init__(self, parent=None):
-        super(MyWindow, self).__init__(parent)
+    def __init__(self):
+        QtWidgets.QMainWindow.__init__(self)
         self.setupUi(self)
 
         self.rbUTF.setChecked(True)
 
-
-        path = QtCore.QDir.rootPath()
+        path = "/home/amvicc/"
         self.dirModel = QtWidgets.QFileSystemModel()
         self.dirModel.setRootPath(path)
         self.dirModel.setFilter(QtCore.QDir.NoDotAndDotDot | QtCore.QDir.AllDirs)
@@ -137,10 +136,11 @@ class MyWindow(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
             self.textBrowser.setFontUnderline(False)
             self.textBrowser.setText(text)
 
+
 def main():
     app = QtWidgets.QApplication(sys.argv)
     window = MyWindow()
-    window.show()
+    window.showMaximized()
     sys.exit(app.exec())
 
 
