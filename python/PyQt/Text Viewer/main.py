@@ -11,14 +11,14 @@ class MyWindow(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
         self.rbUTF.setChecked(True)
 
         path = "/home/amvicc/"
-        self.dirModel = QtWidgets.QFileSystemModel()
+        self.dirModel = QtWidgets.QFileSystemModel(self.window())
         self.dirModel.setRootPath(path)
         self.dirModel.setFilter(QtCore.QDir.NoDotAndDotDot | QtCore.QDir.AllDirs)
         self.treeView.setModel(self.dirModel)
         self.treeView.setRootIndex(self.dirModel.index(path))
         self.treeView.clicked.connect(self.on_clicked_dir)
 
-        self.fileModel = QtWidgets.QFileSystemModel()
+        self.fileModel = QtWidgets.QFileSystemModel(self.window())
         self.fileModel.setFilter(QtCore.QDir.NoDotAndDotDot | QtCore.QDir.Files)
         self.listView.setModel(self.fileModel)
         self.listView.setRootIndex(self.fileModel.index(path))
@@ -27,6 +27,7 @@ class MyWindow(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
         self.pbReset.clicked.connect(self.setDefault)
         self.actionExit.triggered.connect(self.exit)
         self.actionAbout.triggered.connect(self.about)
+        self.actionHelp.triggered.connect(self.help)
 
         self.actionSave.setShortcut("Ctrl+S")
         self.actionSave.setStatusTip('Save File')
@@ -58,8 +59,8 @@ class MyWindow(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
     def save(self):
         name = QtWidgets.QFileDialog.getSaveFileName(self, 'Save File')
         try:
-            file = open(name, 'w')
-            text = self.textBrowser.toPlainText()
+            file = open(name[0], 'w')
+            text = self.textEdit.toPlainText()
             file.write(text)
             file.close()
         except:
@@ -67,6 +68,12 @@ class MyWindow(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
 
     def exit(self):
         self.close()
+
+    def help(self):
+        msg = QtWidgets.QMessageBox()
+        msg.setWindowTitle('Help')
+        msg.setText('This programm for view text of the file')
+        msg.exec()
 
     def about(self):
         msg=QtWidgets.QMessageBox()
@@ -91,50 +98,50 @@ class MyWindow(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
         else:
             stream.setCodec('cp1251')
 
-        self.textBrowser.setText(stream.readAll())
+        self.textEdit.setText(stream.readAll())
         file.close()
 
     def onComboBoxChanged(self, value):
-        text = self.textBrowser.toPlainText()
-        self.textBrowser.clear()
-        self.textBrowser.setTextColor(QtGui.QColor(value.lower()))
-        self.textBrowser.setText(text)
+        text = self.textEdit.toPlainText()
+        self.textEdit.clear()
+        self.textEdit.setTextColor(QtGui.QColor(value.lower()))
+        self.textEdit.setText(text)
 
     def onBoldClick(self):
         if self.cbBold.isChecked():
-            text = self.textBrowser.toPlainText()
-            self.textBrowser.clear()
-            self.textBrowser.setFontWeight(QtGui.QFont.Bold)
-            self.textBrowser.setText(text)
+            text = self.textEdit.toPlainText()
+            self.textEdit.clear()
+            self.textEdit.setFontWeight(QtGui.QFont.Bold)
+            self.textEdit.setText(text)
         else:
-            text = self.textBrowser.toPlainText()
-            self.textBrowser.clear()
-            self.textBrowser.setFontWeight(QtGui.QFont.Normal)
-            self.textBrowser.setText(text)
+            text = self.textEdit.toPlainText()
+            self.textEdit.clear()
+            self.textEdit.setFontWeight(QtGui.QFont.Normal)
+            self.textEdit.setText(text)
 
     def onItalicClick(self):
         if self.cbItalic.isChecked():
-            text = self.textBrowser.toPlainText()
-            self.textBrowser.clear()
-            self.textBrowser.setFontItalic(True)
-            self.textBrowser.setText(text)
+            text = self.textEdit.toPlainText()
+            self.textEdit.clear()
+            self.textEdit.setFontItalic(True)
+            self.textEdit.setText(text)
         else:
-            text = self.textBrowser.toPlainText()
-            self.textBrowser.clear()
-            self.textBrowser.setFontItalic(False)
-            self.textBrowser.setText(text)
+            text = self.textEdit.toPlainText()
+            self.textEdit.clear()
+            self.textEdit.setFontItalic(False)
+            self.textEdit.setText(text)
 
     def onUnderlinedClick(self):
         if self.cbUnderlined.isChecked():
-            text = self.textBrowser.toPlainText()
-            self.textBrowser.clear()
-            self.textBrowser.setFontUnderline(True)
-            self.textBrowser.setText(text)
+            text = self.textEdit.toPlainText()
+            self.textEdit.clear()
+            self.textEdit.setFontUnderline(True)
+            self.textEdit.setText(text)
         else:
-            text = self.textBrowser.toPlainText()
-            self.textBrowser.clear()
-            self.textBrowser.setFontUnderline(False)
-            self.textBrowser.setText(text)
+            text = self.textEdit.toPlainText()
+            self.textEdit.clear()
+            self.textEdit.setFontUnderline(False)
+            self.textEdit.setText(text)
 
 
 def main():
