@@ -10,14 +10,16 @@ class Window(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
         super(Window, self).__init__(parent)
         self.setupUi(self)
 
-        model = QtGui.QStandardItemModel(20, 5)
+        model = QtGui.QStandardItemModel(20, 5, self.window())
         columnNames = ['Title', 'Author', 'Link', 'Number of comments', 'Number of likes']
         model.setHorizontalHeaderLabels(columnNames)
         self.tableView.setModel(model)
+        self.tableView.resizeColumnsToContents()
 
         self.actionSearch_information.triggered.connect(self.search)
         self.actionExit.triggered.connect(self.exit)
         self.actionAbout.triggered.connect(self.about)
+        self.actionHelp.triggered.connect(self.help)
 
     def search(self):
         url = "https://habr.com/ru/news/"
@@ -31,7 +33,7 @@ class Window(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
 
         soup = BeautifulSoup(r.content, "html.parser")
 
-        model = QtGui.QStandardItemModel(20, 5)
+        model = QtGui.QStandardItemModel(20, 5, self.window())
         columnNames = ['Title', 'Author', 'Link', 'Number of comments', 'Number of likes']
         model.setHorizontalHeaderLabels(columnNames)
 
@@ -52,7 +54,7 @@ class Window(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
 
         # Adding authors
         counter = 0
-        authors = soup.find_all("span", {"class": "user-info__nickname"})
+        authors = soup.find_all("span", class_= "user-info__nickname")
         for author in authors:
             item = QtGui.QStandardItem(author.contents[0])
             model.setItem(counter, 1, item)
@@ -76,9 +78,16 @@ class Window(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
             counter = counter + 1
 
         self.tableView.setModel(model)
+        self.tableView.resizeColumnsToContents()
 
     def exit(self):
         self.close()
+
+    def help(self):
+        msg = QtWidgets.QMessageBox()
+        msg.setWindowTitle('Help')
+        msg.setText('This program scrap https://habr.com/ru/news/')
+        msg.exec()
 
     def about(self):
         msg = QtWidgets.QMessageBox()
