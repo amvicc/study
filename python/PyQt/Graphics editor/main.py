@@ -19,28 +19,30 @@ class Window(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
         self.actionSave.triggered.connect(self.save_picture)
         self.actionExit.triggered.connect(self.exit)
 
+        self.actionResize.triggered.connect(self.resize_picture)
         self.actionRotate.triggered.connect(self.rotate)
+        self.actionCrop.triggered.connect(self.crop_image)
 
         self.actionBlur.triggered.connect(self.blurFilter)
         self.actionLighter.triggered.connect(self.lighterFilter)
         self.actionDarker.triggered.connect(self.darkerFilter)
         self.actionSobel_operator.triggered.connect(self.sobel)
 
-    def open_picture(self):
-
-        filename = QtWidgets.QFileDialog.getOpenFileName(self, 'Open picture')
-        self.image = cv2.imread(filename[0])
-        self.update_scene()
+        self.actionKenny_Detector.triggered.connect(self.canny)
 
     def update_scene(self):
         self.scene.clear()
-        height, width, channel = self.image.shape
-        bytesPerLine = 3 * width
-        qImg = QtGui.QImage(self.image.data, width, height, bytesPerLine, QtGui.QImage.Format_RGB888)
+        height, width, bytesPerLine = self.image.shape
+        qImg = QtGui.QImage(self.image.data, width, height, bytesPerLine * width, QtGui.QImage.Format_RGB888)
         pixMap = QtGui.QPixmap.fromImage(qImg)
         self.scene.addPixmap(pixMap)
         self.graphicsView.fitInView(QtCore.QRectF(0, 0, width, height), QtCore.Qt.KeepAspectRatio)
         self.scene.update()
+
+    def open_picture(self):
+        filename = QtWidgets.QFileDialog.getOpenFileName(self, 'Open picture')
+        self.image = cv2.imread(filename[0])
+        self.update_scene()
 
     def save_picture(self):
         image = self.graphicsView.grab().toImage()
@@ -49,6 +51,16 @@ class Window(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
 
     def exit(self):
         self.close()
+
+    def resize_picture(self):
+        x, ok = QtWidgets.QInputDialog.getInt(self, 'Input Dialog', 'Enter X:')
+        if ok:
+            y, okk = QtWidgets.QInputDialog.getInt(self, 'Input Dialog', 'Enter Y:')
+            if okk:
+                dim = (y, x)
+                resized = cv2.resize(self.image, dim)
+                self.image = resized
+                self.update_scene()
 
     def rotate(self):
         angle, ok = QtWidgets.QInputDialog.getDouble(self, 'Input Dialog', 'Enter angle:')
@@ -75,6 +87,37 @@ class Window(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
             rotated = cv2.warpAffine(self.image, M, (nW, nH))
             self.image = rotated
             self.update_scene()
+
+    def crop_image(self):
+        x1, ok = QtWidgets.QInputDialog.getInt(self, 'Input dialog', 'x1: ', min=0)
+        if not ok:
+            return
+
+        x2, ok = QtWidgets.QInputDialog.getInt(self, 'Input dialog', 'x2: ', min=0)
+        if not ok:
+            return
+
+        y1, ok = QtWidgets.QInputDialog.getInt(self, 'Input dialog', 'y1: ', min=0)
+        if not ok:
+            return
+
+        y2, ok = QtWidgets.QInputDialog.getInt(self, 'Input dialog', 'y2: ', min=0)
+        if not ok:
+            return
+
+        rows, cols, _ = self.image.shape
+
+        bad_args = y1 < 0 or x1 < 0 or y2 > rows or x2 > cols or y1 >= y2 or x1 >= x2
+        if bad_args:
+            msg = QtWidgets.QMessageBox()
+            msg.setWindowTitle('Error')
+            msg.setText('Wrong input')
+            msg.exec()
+            return
+
+        croped = self.image[y1:y2, x1:x2]
+        self.image = croped
+        self.update_scene()
 
     def blurFilter(self):
         blur = cv2.blur(self.image, (5, 5))
@@ -112,6 +155,19 @@ class Window(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
         self.image = img_sobel_8
 
         self.update_scene()
+
+    def canny(self):
+        ratio = 3
+        kernel_size = 3
+        low_threshold = 50
+
+        src_gray = cv2.cvtColor(self.image, cv2.COLOR_BGR2GRAY)
+        img_blur = cv2.blur(src_gray, (3, 3))
+        detected_edges = cv2.Canny(img_blur, low_threshold, low_threshold * ratio, kernel_size)
+        mask = detected_edges != 0
+        self.image = self.image * (mask[:, :, None].astype(self.image.dtype))
+        self.update_scene()
+
 
 
 def main():
