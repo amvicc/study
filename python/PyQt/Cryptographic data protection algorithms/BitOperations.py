@@ -35,3 +35,43 @@ def swap_bytes(value, i, j):
 
     x_swapped = (value & mask) | (xj << (i << 3)) | (xi << (j << 3))
     return x_swapped
+
+
+def clear_junior_bits(number, m):
+    return number >> m << m
+
+
+def concat_bits(number, i):
+    binary_number = str(bin(int(number)))
+    binary_number = binary_number[2:]
+    length = len(binary_number)
+
+    eMask = (1 << i) - 1
+    left = (number >> (length - (i * 2))) & (eMask << i)
+    right = number & eMask
+    result = left | right
+    return result
+
+
+def cut_bits(number, i):
+    binary_number = str(bin(int(number)))
+    binary_number = binary_number[2:]
+    length = len(binary_number)
+
+    eMask = (1 << (length - i * 2)) - 1
+    result = (number & (eMask << i)) >> i
+    return result
+
+    # public static int MixBytes(int number, int[] mass)
+    # {
+    #     int answer = 0;
+    #     int offset = 0;
+    #     int mask = (1 << 8) - 1;
+    #     foreach(int index in mass)
+    #     {
+    #         var hit = (number & (mask << (index * 8))) >> (index * 8);
+    #         answer = answer | (hit << offset*8);
+    #         offset++;
+    #     }
+    #     return answer;
+    # }

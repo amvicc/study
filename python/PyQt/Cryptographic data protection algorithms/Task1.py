@@ -237,9 +237,6 @@ class Task1(QtWidgets.QWidget, Task1Window.Ui_Form):
     def task_4(self):
         value = int(self.leNumber.text(), 2)
         m = int(self.input_m.text())
-        for i in range(m):
-            value = BitOperations.clear_bit(value, i)
-
-        result = str(bin(value))
+        result = str(bin(BitOperations.clear_junior_bits(value, m)))
         result = result[2:]
         self.leNumber.setText(result)

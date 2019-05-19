@@ -1,6 +1,7 @@
 import sys
 import MainWindow
 from Task1 import Task1
+from Task2 import Task2
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
@@ -10,11 +11,17 @@ class MyWindow(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
         self.setupUi(self)
 
         self.task1_window = Task1()
+        self.task2_window = Task2()
 
         self.pbTask1.clicked.connect(self.task1)
+        self.pbTask2.clicked.connect(self.task2)
 
     def task1(self):
         self.task1_window.show()
+
+    def task2(self):
+        self.task2_window.show()
+
 
 
 def main():
