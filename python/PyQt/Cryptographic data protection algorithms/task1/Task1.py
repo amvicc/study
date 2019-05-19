@@ -1,6 +1,6 @@
-import Task1Window
+from task1 import Task1Window
 import BitOperations
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtWidgets
 
 
 class Task1(QtWidgets.QWidget, Task1Window.Ui_Form):

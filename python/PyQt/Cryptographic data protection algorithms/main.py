@@ -1,8 +1,8 @@
 import sys
 import MainWindow
-from Task1 import Task1
-from Task2 import Task2
-from PyQt5 import QtCore, QtGui, QtWidgets
+from task1 import Task1
+from task2.Task2 import Task2
+from PyQt5 import QtWidgets
 
 
 class MyWindow(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
@@ -21,7 +21,6 @@ class MyWindow(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
 
     def task2(self):
         self.task2_window.show()
-
 
 
 def main():
